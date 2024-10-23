@@ -1,5 +1,12 @@
+module "nixos-vars" { 
+   source  = "../nixos-vars"
+   content = var.content
+   filename = var.filename
+}
+
 module "system-build" {
   source = "../nix-build"
+  depends_on = [module.nixos-vars]
   attribute = var.nixos_system_attr
   file = var.file
   nix_options = var.nix_options
@@ -7,6 +14,7 @@ module "system-build" {
 
 module "partitioner-build" {
   source = "../nix-build"
+  depends_on = [module.nixos-vars]
   attribute = var.nixos_partitioner_attr
   file = var.file
   nix_options = var.nix_options

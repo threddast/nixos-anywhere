@@ -1,8 +1,16 @@
+module "nixos-vars" { 
+   source  = "../nixos-vars"
+   content = var.special_args
+   filename = var.filename
+}
+
 module "system-build" {
   source = "../nix-build"
   attribute = var.nixos_system_attr
   file = var.file
   nix_options = var.nix_options
+  content_file = var.filename
+  content_nar = module.nixos-vars.result.out
 }
 
 module "partitioner-build" {
@@ -10,6 +18,8 @@ module "partitioner-build" {
   attribute = var.nixos_partitioner_attr
   file = var.file
   nix_options = var.nix_options
+  content_file = var.filename
+  content_nar = module.nixos-vars.result.out
 }
 
 locals {

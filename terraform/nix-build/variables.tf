@@ -14,3 +14,15 @@ variable "nix_options" {
   description = "the options of nix"
   default = {}
 }
+
+variable "content_file" {
+  type = string
+  description = "name of the file to be passed, if any"
+  default = null
+}
+
+variable "content_nar" {
+  type = string
+  description = "nar of the content file, if applicable"
+  default = null
+}

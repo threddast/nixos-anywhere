@@ -29,7 +29,7 @@ else
   flake_rel="$(echo "${attribute}" | cut -d "#" -f 1)"
   # e.g. flake_rel="."
   flake_dir="$(readlink -f "${flake_rel}")"
-  flake_nar="$(nix build --expr "builtins.getFlake ''git+file://${flake_dir}?narHash=sha256-0000000000000000000000000000000000000000000=''" 2>&1 | grep -Po "(?<=got ')sha256-[^']*(?=')")"
+  flake_nar="$(nix flake prefetch "${flake_dir}" --json | jq -r '.hash')"
   # substitute variables into the template
   nix_expr="(builtins.getFlake ''file://${flake_dir}/flake.nix?narHash=${flake_nar}'').${config_path}.extendModules { specialArgs = builtins.fromJSON ''${special_args}''; }"
   # inject `special_args` into nixos config's `specialArgs`
